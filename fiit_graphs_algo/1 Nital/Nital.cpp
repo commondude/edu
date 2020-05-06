@@ -9,15 +9,18 @@ string output="";
 map<char, string> graph;
 map<char, int> used;
 void dfs_rec(char start);
+char bf;//Предыдущая вершина
 
+ifstream in("test15.txt");
+ofstream out("output.txt");
+  
 int main(){
   string line,str1,str2;
   int n,i,j;
 
   map<char, string> ::iterator it=graph.begin();//Создаём итератор для нашего графа
   map<char, int> ::iterator iter;
-  ifstream in("input.txt");
-  ofstream out("output.txt");
+  
 
   if (in.is_open())
     {
@@ -28,9 +31,15 @@ int main(){
         // cout<<line<<"\n";
         getline(in,str1);
 
+        //Обрабатываем случай когда слово всего одно
+        if (n==0 || n==1 ){
+          output=str1;
+          out<<output;
+          exit(0);
+        }
+
+
         while (getline(in,str2)) {
-          //printf("Str1= %s ,Str2 =%s",str1,str2);
-          // cout<<"str1= "<<str1<<" str2= "<<str2<<"\n";
 
           if (str1<=str2){//Если размер первой строки меньше либо равен второй
             for (i=0;i<str1.size();i++){//то идём по всем буквам строк, но не дальше конца первой строки
@@ -70,6 +79,7 @@ int main(){
 
             }
           }
+		  
           //Проверка букв оставшихся в слове, на вхождение в алфавит
           for (j=i;j<str1.size();j++){
 
@@ -82,10 +92,10 @@ int main(){
       }
 
     // Выводим граф
-    // it=graph.begin();
-    // for (int i = 0; it != graph.end(); it++, i++) {  // выводим их
-    //   cout << i << ") Ключ " << it->first << ", значение " << it->second << endl;
-    //   }
+     it=graph.begin();
+     for (int i = 0; it != graph.end(); it++, i++) {  // выводим их
+       cout << i << ") Key " << it->first << ", Value " << it->second << endl;
+       }
 
     }
 
@@ -94,12 +104,12 @@ int main(){
       used.insert(pair<char,int>(it->first,0));
       it++;
     }
-    //DFS для всех истоков
+    //DFS для всех истоков И не истоков для нахождения контуров
     it=graph.begin();
     while(it != graph.end()){
       if (line.find(it->first)==string::npos){
         //dfs
-
+        
 
         dfs_rec(it->first);
         // cout<<"abc = "<<output<<"\n";
@@ -113,12 +123,19 @@ int main(){
         it++;
       }
       else {
-        // printf("ne istok \n");
+        printf("ne istok \n");
+		dfs_rec(it->first);
+        // cout<<"abc = "<<output<<"\n";
+        output="";
+        iter=used.begin();
+        while(iter != used.end()){
+          iter->second=0;
+          iter++;
+        }
         it++;
       }
     }
 
-    //Тест
 
 
 
@@ -134,12 +151,23 @@ void dfs_rec(char start){
 
   switch (used[start]) {
     case 0:{
+	  cout<<"Hup! \n"; 
       used[start]=1;
-      if (graph[start]!=""){
-        for (i=0;i<graph[start].size();i++){
-          if (used[graph[start][i]]==0){
+      if (graph[start]!=""){//Если множество переходов не пустое
+        for (i=0;i<graph[start].size();i++){//Для всех элементов множества
+          if (used[graph[start][i]]==0){//Если
+            
             dfs_rec(graph[start][i]);
           }
+		  else if(used[graph[start][i]]==1){
+			        cout<<"Hop! \n";  
+					output="-";
+					out<<output;
+					in.close();
+					out.close();
+					exit(0);
+		  
+		  }
         }
         used[start]=2;
         output=start+output;
@@ -151,12 +179,16 @@ void dfs_rec(char start){
       break;
     }
     case 1:{
+      cout<<"Hop! \n";  
       output="-";
-      exit(0);
+	  out<<output;
+	  in.close();
+      out.close();
+	  exit(0);
       break;
     }
     case 2:{
-
+	  cout<<"Hip! \n";
       break;
     }
   }
