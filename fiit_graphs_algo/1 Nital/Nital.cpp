@@ -12,7 +12,7 @@ map<char, int> used;
 void dfs_rec(char start);
 char bf;//Предыдущая вершина
 vector <string> ways;
-ifstream in("input.txt");
+ifstream in("test2.txt");
 ofstream out("output.txt");
 
 int main(){
@@ -98,10 +98,10 @@ int main(){
       }
 
     // Выводим граф
-     // it=graph.begin();
-     // for (int i = 0; it != graph.end(); it++, i++) {  // выводим их
-     //   cout << i << ") Key " << it->first << ", Value " << it->second << endl;
-     //   }
+     it=graph.begin();
+     for (int i = 0; it != graph.end(); it++, i++) {  // выводим их
+       cout << i << ") Key " << it->first << ", Value " << it->second << endl;
+       }
 
     }
 
@@ -119,7 +119,7 @@ int main(){
       if (line.find(it->first)==string::npos){
         //dfs для истоков
         dfs_rec(it->first);
-        // cout<<"abc = "<<output<<"\n";
+        cout<<"way = "<<output<<"\n";
         ways.insert(ways.end(),output);
         // out<<output;
         output="";
@@ -154,6 +154,7 @@ int main(){
     //Формируем строку алфавита из вектора путей
     //Если есть только один путь, значит все буквы содержаться в нём, и мы его и Выводим
     if (ways.size()==1){
+
       out<<ways[0];
       exit(0);
     }
@@ -186,7 +187,7 @@ int main(){
           str2="";
         }
       }
-      // cout<<output<<"\n";
+
       out<<output;
 
 
@@ -208,35 +209,37 @@ void dfs_rec(char start){
 
   switch (used[start]) {
     case 0:{
-	  // cout<<"Hup! \n";
-      used[start]=1;
+
+      used[start]=1;//Помечаем посещённой
       if (graph[start]!=""){//Если множество переходов не пустое
-        for (i=0;i<graph[start].size();i++){//Для всех элементов множества
-          if (used[graph[start][i]]==0){//Если
+        for (i=0;i<graph[start].size();i++){//Для всех элементов множества переходов
+          if (used[graph[start][i]]==0){//Если не просмотрена вершина
 
             dfs_rec(graph[start][i]);
-          }
-		  else if(used[graph[start][i]]==1){
-			        // cout<<"Hop1! \n";
-					output="-";
-					out<<output;
-					in.close();
-					out.close();
-					exit(0);
 
-		  }
+          }
+		      else if(used[graph[start][i]]==1){//Если просмотрена то есть контур!
+
+					       output="-";
+					       out<<output;
+					       in.close();
+				         out.close();
+					       exit(0);
+
+		      }
         }
+
         used[start]=2;
         output=start+output;
       }
-      else{
+      else{// Если множество переходов пустое то это сток
         used[start]=2;
         output=start+output;
       }
       break;
     }
     case 1:{
-      // cout<<"Hop2! \n";
+
       output="-";
 	    out<<output;
 	    in.close();
