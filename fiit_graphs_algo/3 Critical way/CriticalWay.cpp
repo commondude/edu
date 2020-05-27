@@ -6,20 +6,22 @@
 #include <vector>
 using namespace std;
 
-ifstream in("input.txt");
+ifstream in("test4.txt");
 ofstream out("output.txt");
 
 
 
 void dfs (int start,vector<vector<int>> &g,vector<int> &ans,vector<bool> &used) {
 	used[start] = true;
+	cout<<"start= "<<start<<"\n";
 	for (size_t i=0; i<g[start].size(); ++i) {
 		//int to = g[start][i];
-		if (!used[i] && g[start][i]>=0){
-			// cout<<"test\n";
+		if (!used[i]&&g[start][i]>0){
+
 			dfs (i,g,ans,used);
 		}
 	}
+	 cout<<"push start "<<start<<"\n";
 	ans.push_back (start);
 }
 
@@ -28,7 +30,7 @@ void topological_sort(vector<vector<int>> &g,vector<int> &ans,vector<bool> &used
 	// cout<<"n= "<<n<<"\n";
 	for (size_t i=0; i<n; ++i){
 		used[i] = false;
-		// cout<<"used["<<i<<"]= "<<used[i]<<"\n";
+		 // cout<<"used["<<i<<"]= "<<used[i]<<"\n";
 	}
 	ans.clear();
 
@@ -81,7 +83,7 @@ int main(){
       }
 
 			// cout<<"Input done!\n";
-      //Вывод
+      // Вывод
       // for(i=0;i<n;i++){
       //   for(j=0;j<n;j++){
       //     cout<<v[i][j]<<" ";
@@ -96,6 +98,7 @@ int main(){
 
 
       topological_sort(v,ans,used);
+			cout<<"Ans size "<<ans.size()<<"\n";
 			cout<<"Ans= ";
 			for (i=0;i<ans.size();i++){
 				cout<<ans[i];
@@ -121,32 +124,55 @@ int main(){
 			// 	}
 
 
+
+
+			//Вывод
+			for(i=0;i<n;i++){
+				for(j=0;j<n;j++){
+					cout<<v[i][j]<<" ";
+				}
+				cout<<"\n";
+			}
+			cout<<"\n";
+
+
 			//Меняем нули на min_int
 			for(i=0;i<v.size();i++)
 				for(j=0;j<v.size();j++)
 					if (v[i][j]==0)
 						v[i][j]=min_int;
 
-			//Вывод
-			// for(i=0;i<n;i++){
-			// 	for(j=0;j<n;j++){
-			// 		cout<<v[i][j]<<" ";
-			// 	}
-			// 	cout<<"\n";
-			// }
-
 			//Производим поиск критических путей
-			//vector<vector<int>> b(n,vector<int>(0));
+			vector<vector<int>> b(n,vector<int>(0));
 
-			for(i=0;i<n;i++){
-				for(j=i+1;j<n;j++)
-					for(z=j+1;z<n;z++)
-						if(v[i][z]<v[i][j]+v[j][z]){
-							v[i][z]=v[i][j]+v[j][z];
-							//b[i][z]=j;
+			for(i=0;i<n;++i){
+				for(j=i+1;j<n;++j)
+					for(z=j+1;z<n;++z)
+						if(v[ans[i]][ans[z]]<(v[ans[i]][ans[j]]+v[ans[j]][ans[z]])){
+							v[ans[i]][ans[z]]=v[ans[i]][ans[j]]+v[ans[j]][ans[z]];
+							b[i][z]=j;
 						}
 			}
 
+			//Прибавляем вес конечных вершин в b
+			// cout<<b.size()<<"\n";
+			// for(i=0;i<b.size();i++)
+			// 	for(j=0;j<b.size();j++)
+			// 			b[i][j]+=w[j];
+			// 			// if (b[i][j]>0)
+			// 		// {
+			// 		// 	cout<<"bob\n";
+			// 		// 	b[i][j]+=w[j];
+			// 		// }
+
+			// Вывод b
+			// for(i=0;i<n;i++){
+			// 	for(j=0;j<n;j++){
+			// 		cout<<b[i][j]+w[j]<<" ";
+			// 	}
+			// 	cout<<"\n";
+			// }
+
 			//Вывод
 			// for(i=0;i<n;i++){
 			// 	for(j=0;j<n;j++){
@@ -155,11 +181,7 @@ int main(){
 			// 	cout<<"\n";
 			// }
 
-			//Прибавляем вес конечных вершин
-			// for(i=0;i<v.size();i++)
-			// 	for(j=0;j<v.size();j++)
-			// 		if (v[i][j]>0)
-			// 			v[i][j]+=w[j];
+
 
 			// Вывод
 			// for(i=0;i<n;i++){
@@ -171,18 +193,25 @@ int main(){
 
 
 			//Меняем  min_int  на нули
-			for(i=0;i<v.size();i++)
-				for(j=0;j<v.size();j++)
-					if (v[i][j]<0)
-						v[i][j]=0;
+			// for(i=0;i<v.size();i++)
+			// 	for(j=0;j<v.size();j++)
+			// 		if (v[i][j]<0)
+			// 			v[i][j]=0;
+
+			//Прибавляем вес конечных вершин
+			// for(i=0;i<v.size();i++)
+			// 	for(j=0;j<v.size();j++)
+			// 		if (v[i][j]>0)
+			// 			v[i][j]+=w[j];
+
 
 			//Вывод
-			for(i=0;i<n;i++){
-				for(j=0;j<n;j++){
-					cout<<v[i][j]<<" ";
-				}
-				cout<<"\n";
-			}
+			// for(i=0;i<n;i++){
+			// 	for(j=0;j<n;j++){
+			// 		cout<<v[i][j]<<" ";
+			// 	}
+			// 	cout<<"\n";
+			// }
 
 			//Вывод в файл
 			for(i=0;i<n;i++){
