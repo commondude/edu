@@ -55,7 +55,8 @@ int main(){
       in>>n;
       // cout<<"n= "<<n<<"\n";
       vector<int> w;//Вектор весов
-      vector<vector<int>> v(n,vector<int>());//Граф
+      vector<vector<int>> v(n,vector<int>()),b(n,vector<int>());//Граф
+			// vector<vector<int>> ;
 
 
 
@@ -82,27 +83,29 @@ int main(){
         // cout<<"\n";
       }
 
-			// cout<<"Input done!\n";
+			cout<<"Input done!\n";
       // Вывод
-      // for(i=0;i<n;i++){
-      //   for(j=0;j<n;j++){
-      //     cout<<v[i][j]<<" ";
-      //   }
-      //   cout<<"\n";
-      // }
+      for(i=0;i<n;i++){
+        for(j=0;j<n;j++){
+          cout<<v[i][j]<<" ";
+        }
+        cout<<"\n";
+      }
+			cout<<"\n";
 
       //Topologic sort
 			vector<bool> used(n);
-			vector<int> ans(n);
+			vector<int> ans={0,9,1,3,5,2,6,4,7,8};
 
 
 
-      topological_sort(v,ans,used);
-			cout<<"Ans size "<<ans.size()<<"\n";
-			cout<<"Ans= ";
-			for (i=0;i<ans.size();i++){
-				cout<<ans[i];
-			}
+      // topological_sort(v,ans,used);
+			// cout<<"Ans size "<<ans.size()<<"\n";
+			// cout<<"Ans= ";
+			// for (i=0;i<ans.size();i++){
+			// 	cout<<ans[i];
+			// }
+
 			cout<<"\n";
 
 			//Меняем строки в матрице в соответствии
@@ -127,13 +130,13 @@ int main(){
 
 
 			//Вывод
-			for(i=0;i<n;i++){
-				for(j=0;j<n;j++){
-					cout<<v[i][j]<<" ";
-				}
-				cout<<"\n";
-			}
-			cout<<"\n";
+			// for(i=0;i<n;i++){
+			// 	for(j=0;j<n;j++){
+			// 		cout<<v[i][j]<<" ";
+			// 	}
+			// 	cout<<"\n";
+			// }
+			// cout<<"\n";
 
 
 			//Меняем нули на min_int
@@ -142,17 +145,33 @@ int main(){
 					if (v[i][j]==0)
 						v[i][j]=min_int;
 
-			//Производим поиск критических путей
-			vector<vector<int>> b(n,vector<int>(0));
 
+			//Производим поиск критических путей
+
+			// for(i=0;i<b.size();i++){
+			// 	for(j=0;j<b.size();j++){
+			// 		b[i].push_back(0);
+			// 		cout<<b[i][j]<<" ";
+			// 	}
+			// 	cout<<"\n";
+			// }
+
+			cout<<"\n";
 			for(i=0;i<n;++i){
-				for(j=i+1;j<n;++j)
+				for(j=i+1;j<n;++j){
 					for(z=j+1;z<n;++z)
 						if(v[ans[i]][ans[z]]<(v[ans[i]][ans[j]]+v[ans[j]][ans[z]])){
 							v[ans[i]][ans[z]]=v[ans[i]][ans[j]]+v[ans[j]][ans[z]];
-							b[i][z]=j;
+							//b[i][z]=j;
 						}
+					}
 			}
+
+			for(i=0;i<n;++i){
+				cout<<" ans[i]= "<<ans[i]<<"\n";
+
+			}
+
 
 			//Прибавляем вес конечных вершин в b
 			// cout<<b.size()<<"\n";
@@ -166,9 +185,10 @@ int main(){
 			// 		// }
 
 			// Вывод b
+			// cout<<"Output b\n";
 			// for(i=0;i<n;i++){
 			// 	for(j=0;j<n;j++){
-			// 		cout<<b[i][j]+w[j]<<" ";
+			// 		cout<<b[i][j]<<" ";
 			// 	}
 			// 	cout<<"\n";
 			// }
@@ -193,10 +213,10 @@ int main(){
 
 
 			//Меняем  min_int  на нули
-			// for(i=0;i<v.size();i++)
-			// 	for(j=0;j<v.size();j++)
-			// 		if (v[i][j]<0)
-			// 			v[i][j]=0;
+			for(i=0;i<v.size();i++)
+				for(j=0;j<v.size();j++)
+					if (v[i][j]<0)
+						v[i][j]=0;
 
 			//Прибавляем вес конечных вершин
 			// for(i=0;i<v.size();i++)
@@ -206,12 +226,12 @@ int main(){
 
 
 			//Вывод
-			// for(i=0;i<n;i++){
-			// 	for(j=0;j<n;j++){
-			// 		cout<<v[i][j]<<" ";
-			// 	}
-			// 	cout<<"\n";
-			// }
+			for(i=0;i<n;i++){
+				for(j=0;j<n;j++){
+					cout<<v[i][j]<<" ";
+				}
+				cout<<"\n";
+			}
 
 			//Вывод в файл
 			for(i=0;i<n;i++){
