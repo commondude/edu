@@ -14,7 +14,7 @@ ofstream out("output.txt");
 void dfs (int start,vector<vector<int>> &g,vector<int> &ans,vector<bool> &used) {
 	used[start] = true;
 	for (size_t i=0; i<g[start].size(); ++i) {
-		if (!used[i]&&g[start][i]>0){
+		if (!used[i]&&g[start][i]!=-2147483647){
 			dfs (i,g,ans,used);
 		}
 	}
@@ -109,7 +109,7 @@ int main(){
 					for(z=j+1;z<n;++z)
 						if(v[ans[i]][ans[z]]<(v[ans[i]][ans[j]]+v[ans[j]][ans[z]])&&(v[ans[i]][ans[j]]>0)&&(v[ans[j]][ans[z]]>0)){
 							v[ans[i]][ans[z]]=v[ans[i]][ans[j]]+v[ans[j]][ans[z]];
-							b[ans[i]][ans[z]]=w[ans[j]];
+							b[ans[i]][ans[z]]=ans[j];
 						}
 					}
 			}
@@ -127,13 +127,13 @@ int main(){
 						v[i][j]+=w[j];
 
 			// Вывод
-      for(i=0;i<n;i++){
-        for(j=0;j<n;j++){
-          cout<<b[i][j]<<" ";
-        }
-        cout<<"\n";
-      }
-			cout<<"\n";
+      // for(i=0;i<n;i++){
+      //   for(j=0;j<n;j++){
+      //     cout<<b[i][j]<<" ";
+      //   }
+      //   cout<<"\n";
+      // }
+			// cout<<"\n";
 			//Вывод в файл
 			for(i=0;i<n;i++){
 				for(j=0;j<n;j++){
