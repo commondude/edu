@@ -8,6 +8,8 @@ using namespace std;
 ifstream in("input.txt");
 ofstream out("output.txt");
 
+int kraskal();
+
 int main(){
   if (in.is_open())
     {
@@ -20,7 +22,8 @@ int main(){
       cout<<"m= "<<m<<"\n";
 
       vector<vector<int>> v(n,vector<int>(2));
-
+      map<int,int(2)> graph;
+      
       for(int i=0;i<m;++i){
         in>>v1;
         in>>v2;
@@ -29,6 +32,9 @@ int main(){
         cout<<"v2= "<<v2<<"\n";
         cout<<"w= "<<w<<"\n";
       }
+
+
+
     }
 
 
