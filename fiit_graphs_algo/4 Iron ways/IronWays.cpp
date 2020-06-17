@@ -22,12 +22,14 @@ int main(){
       cout<<"m= "<<m<<"\n";
 
       vector<vector<int>> v(n,vector<int>(2));
-      map<int,int(2)> graph;
-      
+      map<int,vector<int>> graph;
+
       for(int i=0;i<m;++i){
         in>>v1;
         in>>v2;
         in>>w;
+        //graph.insert(w,[v1,v2]);
+
         cout<<"v1= "<<v1<<"\n";
         cout<<"v2= "<<v2<<"\n";
         cout<<"w= "<<w<<"\n";
