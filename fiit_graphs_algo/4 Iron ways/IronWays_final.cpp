@@ -1,6 +1,5 @@
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <map>
 #include <vector>
 using namespace std;
@@ -28,6 +27,7 @@ int main(){
     map<int,int> summap;
     map<int,int> :: iterator sm;
     vector<int> t(2);
+
     for(int i=0;i<m;++i){
       in>>v1>>v2>>w;
       t[0]=v1-1;
@@ -36,36 +36,26 @@ int main(){
     }
 
     min=kraskal_sum(n,graph,weight);
-    // cout<< "min = "<<min<<"\n";
     memory_weight.swap(weight);
-
-    // cout<<"memory size "<<memory_weight.size()<<"\n";
 
     for(int i=memory_weight.size()-1;i>=0;--i)
     {
-      // cout<<"Test!\n";
       weight.clear();
       w=memory_weight[i];
-
       t[0]=graph[w][0];
       t[1]=graph[w][1];
-
       graph.erase(w);
+
       second_min=kraskal_sum(n,graph,weight);
-      // cout<<"second_min ="<<second_min<<"\n";
-      // cout<<"\n";
+
       graph[w]=t;
-      // cout<<"second_min ="<<second_min<<"\n";
+
       if(second_min!=0)
       {
 
         summap[second_min]=second_min;
       }
-
-
-
     }
-
 
     sm=summap.begin();
     second_min=sm->second;
@@ -132,86 +122,16 @@ int kraskal_sum(int n, map<int,vector<int>> &graph,vector<int> &weight )
     }
   }
 
-  for(i=0;i<weight.size();++i)
-  {
-    sum+=weight[i];
-  }
-
-
   if(weight.size()<n-1){
     sum=0;
   }
+  else
+  {
+    for(i=0;i<weight.size();++i)
+    {
+      sum+=weight[i];
+    }
+  }
+
   return sum;
 }
-
-
-
-  // cout<<"Wlist\n";
-  //
-  // for(i=0;i<n;++i)
-  // {
-  //
-  //   cout<<wlist[i][0];
-  //
-  // }
-  // cout<<"\n";
-
-  // for (i=0;i<n;++i)
-  // {
-  //   cout<<"Weight list of "<<i<<" segment"<<"\n";
-  //   for(int j=0;j<wlist[i].size();++j)
-  //   {
-  //       cout<<wlist[i][j]<<" ";
-  //   }
-  //   cout<<"\n";
-  // }
-
-
-  // for(i=0;i<n;++i)
-  // {
-  //   cout<<"Comp "<<i<<" elem = "<<comp[i]<<"\n";
-  // }
-  // cout<<"\n";
-
-
-
-  // for (i=0;i<n;++i)
-  // {
-  //   cout<<"Weight list of "<<i<<" segment"<<"\n";
-  //   for(int j=0;j<wlist[i].size();++j)
-  //   {
-  //       cout<<wlist[i][j]<<" ";
-  //   }
-  //   cout<<"\n";
-  // }
-  //
-  // for(i=0;i<n;++i)
-  // {
-  //   cout<<"Comp "<<i<<" elem = "<<comp[i]<<"\n";
-  // }
-  // cout<<"\n";
-
-
-
-
-
-
-
-  // int i=0;
-  // for(auto it=graph.begin();it!=graph.end();it++)
-  // {
-  //     cout<<"Weight of "<<i<<" edge = "<<it->first<<"\n";
-  //     cout<<"It goes from "<<it->second[0]<<" to "<<it->second[1]<<"\n";
-  //     i++;
-  // }
-
-
-
-  // for(i=0;i<n;++i)
-  // {
-  //   cout<<"Comp "<<i<<" elem = "<<comp[i]<<"\n";
-  // }
-  // cout<<"\n";
-
-  // cout<<"And sum is...\n";
-  // cout<<"sum= "<<sum<<"\n";
