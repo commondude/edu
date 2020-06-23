@@ -3,9 +3,10 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <list>
 using namespace std;
 
-ifstream in("test5.txt");
+ifstream in("test4.txt");
 ofstream out("output.txt");
 
 void max_flow();
@@ -45,43 +46,76 @@ int main(){
   }
 
   // //Вывод графа
+  // for(int i=0;i<n;++i)
+  // {
+  //   if(wizards[i][2]!=0)
+  //   {
+  //     cout<<"Vertex["<<i<<"] has edges :\n";
+  //     for(int j=0;j<n;++j)
+  //     {
+  //       if(graph[i][j]!=-1)
+  //       {
+  //           cout<<"To vertex["<<j<<"] which weight is "<<graph[i][j]<<"\n";
+  //       }
+  //
+  //     }
+  //   }
+  //
+  // }
+
+  map<int,int> sort_gandalf_stream;
+
   for(int i=0;i<n;++i)
   {
-    if(wizards[i][2]!=0)
+    if(graph[0][i]!=0)
     {
-      // cout<<"Vertex["<<i<<"] has edges :\n";
-      for(int j=0;j<n;++j)
-      {
-        if(graph[i][j]!=-1)
-        {
-            // cout<<"To vertex["<<j<<"] which weight is "<<graph[i][j]<<"\n";
-        }
-
-      }
+      sort_gandalf_stream[graph[0][i]]=i;
     }
-
   }
+
+
   bool dulgur_range;
   int score_of_strike=0,tmp=0;
-  for(int i=1;i<n;++i)
+  for(auto it=sort_gandalf_stream.begin();it!=sort_gandalf_stream.end();++it)
   {
-    if(graph[0][i]!=-1)
-    {
-
       cout<<"\n";
       cout<<"I try to bring them light! \n";
-      cout<<"Thru wizard["<<i<<"] with ray power = "<<graph[0][i]<<"\n";
+      cout<<"Thru wizard["<<it->second<<"] with ray power = "<<it->first<<"\n";
       dulgur_range=false;
-      tmp=way_of_ray(wizards,graph,i,graph[0][i],dulgur_range);
-      if(dulgur_range)
-      {
-        score_of_strike+=tmp;
-      }
+      tmp=way_of_ray(wizards,graph,it->second,it->first,dulgur_range);
+      score_of_strike+=tmp;
+      // if(dulgur_range)
+      // {
+      //   score_of_strike+=tmp;
+      // }
       cout<<"Rayback is "<<score_of_strike<<"\n";
-      cout<<"Ray to vertex["<<i<<"] has been complete \n";
+      cout<<"Ray to vertex["<<it->second<<"] has been complete \n";
       cout<<"\n";
-    }
+
   }
+
+  // bool dulgur_range;
+  // int score_of_strike=0,tmp=0;
+  // for(int i=1;i<n;++i)
+  // {
+  //   if(graph[0][i]!=-1)
+  //   {
+  //
+  //     cout<<"\n";
+  //     cout<<"I try to bring them light! \n";
+  //     cout<<"Thru wizard["<<i<<"] with ray power = "<<graph[0][i]<<"\n";
+  //     dulgur_range=false;
+  //     tmp=way_of_ray(wizards,graph,i,graph[0][i],dulgur_range);
+  //     score_of_strike+=tmp;
+  //     // if(dulgur_range)
+  //     // {
+  //     //   score_of_strike+=tmp;
+  //     // }
+  //     cout<<"Rayback is "<<score_of_strike<<"\n";
+  //     cout<<"Ray to vertex["<<i<<"] has been complete \n";
+  //     cout<<"\n";
+  //   }
+  // }
 
 
   for(int i=1;i<n;++i)
@@ -133,11 +167,15 @@ int way_of_ray(vector<vector<int>> &wizards,vector<vector<int>> &graph, int vert
   {
     wizards[vertex][3]=wizards[vertex][3]+stream-wizards[vertex][0];
     wizards[vertex][0]=0;
+    stream=stream-wizards[vertex][0];
   }
   else
   {
     wizards[vertex][0]=wizards[vertex][0]-stream;
+    stream=0;
+
   }
+  cout<<"Stream = "<<stream<<"\n";
   cout<<"Check 2 hungry of vertex["<<vertex<<"]= "<<wizards[vertex][0]<<"\n";
   cout<<"Ray power steel = "<<wizards[vertex][3]<<"\n";
 
@@ -201,7 +239,7 @@ int way_of_ray(vector<vector<int>> &wizards,vector<vector<int>> &graph, int vert
   }
   else
   {
-    // cout<<"No backstream from "<<vertex<<" \n \n";
+    cout<<"No backstream from "<<vertex<<" \n \n";
     dulgur_range=true;
     return 0;
   }
